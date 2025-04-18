@@ -79,6 +79,8 @@ jobs:
 
     - name: CMake
       uses: lukka/get-cmake@latest
+      with:
+        cmakeVersion: "~3.31.0"
 
     - name: MSVC
       uses: TheMrMilchmann/setup-msvc-dev@v2
