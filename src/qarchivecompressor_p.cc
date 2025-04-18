@@ -665,7 +665,8 @@ short CompressorPrivate::compress() {
       }
     }
 
-    n_TotalEntries = m_ConfirmedFiles.size();  // for reporting progress.
+    // for reporting progress.
+    n_TotalEntries = static_cast<int>(m_ConfirmedFiles.size());
   }
 
   // Start compressing files.
@@ -730,7 +731,8 @@ short CompressorPrivate::compress() {
             n_BytesProcessed += len;
 
             emit progress(node->entry,
-                          (n_TotalEntries - (m_ConfirmedFiles.size() - 1)),
+                          (n_TotalEntries -
+                           (static_cast<int>(m_ConfirmedFiles.size()) - 1)),
                           n_TotalEntries, n_BytesProcessed, n_BytesTotal);
 
             QCoreApplication::processEvents();
@@ -750,8 +752,7 @@ short CompressorPrivate::compress() {
 
       // Setup archive entry.
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 8, 0))
-      auto datetime =
-          static_cast<time_t>(QDateTime::currentDateTime().toSecsSinceEpoch());
+      auto datetime = static_cast<time_t>(QDateTime::currentSecsSinceEpoch());
 #else
       auto datetime =
           static_cast<time_t>(QDateTime::currentDateTime().toTime_t());
@@ -784,9 +785,10 @@ short CompressorPrivate::compress() {
         archive_write_data(m_ArchiveWrite.data(), buff, len);
         n_BytesProcessed += len;
 
-        emit progress(node->entry,
-                      (n_TotalEntries - (m_ConfirmedFiles.size() - 1)),
-                      n_TotalEntries, n_BytesProcessed, n_BytesTotal);
+        emit progress(
+            node->entry,
+            (n_TotalEntries - (static_cast<int>(m_ConfirmedFiles.size()) - 1)),
+            n_TotalEntries, n_BytesProcessed, n_BytesTotal);
 
         QCoreApplication::processEvents();
         len = (node->io)->read(buff, sizeof(buff));
@@ -795,7 +797,8 @@ short CompressorPrivate::compress() {
 
     m_ConfirmedFiles.pop_front();
 
-    emit progress(node->entry, (n_TotalEntries - m_ConfirmedFiles.size()),
+    emit progress(node->entry,
+                  (n_TotalEntries - static_cast<int>(m_ConfirmedFiles.size())),
                   n_TotalEntries, n_BytesProcessed, n_BytesTotal);
 
     delete node;

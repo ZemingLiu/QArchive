@@ -15,9 +15,18 @@ class IOReaderPrivate {
   void setBlockSize(int);
   void setIODevice(QIODevice*);
 
-  [[gnu::warn_unused_result]] bool isOpen() const;
-  [[gnu::warn_unused_result]] bool isReadable() const;
-  [[gnu::warn_unused_result]] bool isSequential() const;
+#if defined(__GNUC__) || defined(__clang__)
+  [[gnu::warn_unused_result]]
+#endif
+  bool isOpen() const;
+#if defined(__GNUC__) || defined(__clang__)
+  [[gnu::warn_unused_result]]
+#endif
+  bool isReadable() const;
+#if defined(__GNUC__) || defined(__clang__)
+  [[gnu::warn_unused_result]]
+#endif
+  bool isSequential() const;
 
   qint64 read(char*);
   qint64 seek(qint64, /*whence=*/int);
