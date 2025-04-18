@@ -16,7 +16,10 @@ class QARCHIVE_EXPORT MemoryExtractorOutput : public QObject {
   explicit MemoryExtractorOutput(std::unique_ptr<QVector<MemoryFile>>,
                                  QObject* parent = nullptr);
 
-  [[gnu::warn_unused_result]] const QVector<MemoryFile>& getFiles() const;
+#if defined(__GNUC__) || defined(__clang__)
+  [[gnu::warn_unused_result]]
+#endif
+  const QVector<MemoryFile>& getFiles() const;
 
  private:
   std::unique_ptr<QVector<MemoryFile>> m_Files;

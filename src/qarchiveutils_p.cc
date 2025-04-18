@@ -185,10 +185,15 @@ int archiveWriteOpenQIODevice(struct archive* archive, QIODevice* device) {
  * free it automatically.
 */
 char* concat(const char* dest, const char* src) {
-  auto ret =
-      static_cast<char*>(calloc(sizeof(char), strlen(dest) + strlen(src) + 1));
+  auto len = strlen(dest) + strlen(src) + 1;
+  auto ret = static_cast<char*>(calloc(sizeof(char), len));
+#if defined(Q_CC_MSVC)
+  strcpy_s(ret, len, dest);
+  strcat_s(ret, len, src);
+#else
   strcpy(ret, dest);
   strcat(ret, src);
+#endif
   return ret;
 }
 
