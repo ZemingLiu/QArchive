@@ -21,4 +21,10 @@ else()
    find_dependency(LibArchive)
 endif()
 
+set_and_check(QArchive_INCLUDE_DIR "@PACKAGE_CMAKE_INSTALL_INCLUDEDIR@")
+set_and_check(QArchive_LIBRARY_DIR "@PACKAGE_CMAKE_INSTALL_LIBDIR@")
+
 include("${CMAKE_CURRENT_LIST_DIR}/QArchiveTargets.cmake")
+
+check_required_components(QArchive)
+
